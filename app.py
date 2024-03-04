@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import numpy as np
+import math
 
 st.title("NBPIを計算するアプリ")
 bpi_file = st.file_uploader("BPIManagerからエクスポートしたCSVをアップロードしてください")
@@ -15,15 +16,22 @@ def diff_to_name(row):
     else:
         return title + "(L)"
 
-
+def culc_total_bpi(l):
+    n = len(l)
+    k = math.log2(n)
+    print(l)
+    tmp = sum([i**k for i in l]) / n
+    return tmp**(1/k)
+    
+    
 if bpi_file is not None:
     df = pd.read_csv(bpi_file)
     df = df[["楽曲名", "難易度", "BPI"]].sort_values(by="BPI", ascending=False).replace([np.inf, -np.inf], np.nan).dropna()
     df["楽曲名"] = df.apply(diff_to_name, axis=1)
     df = df.drop("難易度", axis=1)
     song_count = st.slider("計算する曲数を選んでください(10～100, 10刻み)", 10, 100, 20, 10)
-    hbpi_20 = df["BPI"].head(song_count).mean()
-    st.markdown(f"あなたの{song_count}曲のHBPIは**{round(hbpi_20, 2)}**です。")
+    hbpi = culc_total_bpi(df["BPI"].head(song_count).to_list())
+    st.markdown(f"あなたの{song_count}曲のHBPIは**{round(hbpi, 2)}**です。")
     st.markdown("## 一覧")
     st.write(df.head(song_count))
     
