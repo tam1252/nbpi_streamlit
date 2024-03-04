@@ -5,7 +5,7 @@ import math
 
 st.title("NBPIを計算するアプリ")
 bpi_file = st.file_uploader("BPIManagerからエクスポートしたCSVをアップロードしてください")
-st.info("BPIManagerの設定>その他>エクスポートで保存したCSVをアップロードして下さい")
+st.info("BPIManagerの設定>その他>エクスポートで保存したCSVをアップロードして下さい  \n    \n  NBPIとは？:https://x.com/taniguchicup/status/1764177877913014618?s=20")
 def diff_to_name(row):
     diff = row["難易度"]
     title = row["楽曲名"]
