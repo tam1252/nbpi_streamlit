@@ -23,7 +23,7 @@ if bpi_file is not None:
     df = df.drop("難易度", axis=1)
     song_count = st.slider("計算する曲数を選んでください(10～100, 10刻み)", 10, 100, 20, 10)
     hbpi_20 = df["BPI"].head(song_count).mean()
-    st.markdown(f"あなたのHBPI({song_count})は{round(hbpi_20, 2)}です。")
+    st.markdown(f"あなたの{song_count}曲のHBPIは**{round(hbpi_20, 2)}**です。")
     st.markdown("## 一覧")
     st.write(df.head(song_count))
     
