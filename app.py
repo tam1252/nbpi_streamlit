@@ -27,3 +27,10 @@ if bpi_file is not None:
     st.markdown("## 一覧")
     st.write(df.head(song_count))
     
+    st.download_button(
+    label="CSVにエクスポート",
+    data=df.head(song_count).to_csv().encode("shift_jis"),
+    file_name='hbpi.csv',
+    mime='text/csv',
+    )
+    
