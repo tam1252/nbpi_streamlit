@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 
+st.title("NBPIを計算するアプリ")
 bpi_file = st.file_uploader("BPIManagerからエクスポートしたCSVをアップロードしてください")
 st.info("BPIManagerの設定>その他>エクスポートで保存したCSVをアップロードして下さい")
 def diff_to_name(row):
