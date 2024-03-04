@@ -19,26 +19,36 @@ def diff_to_name(row):
 def culc_total_bpi(l):
     n = len(l)
     k = math.log2(n)
-    print(l)
     tmp = sum([i**k for i in l]) / n
     return tmp**(1/k)
     
     
 if bpi_file is not None:
-    df = pd.read_csv(bpi_file)
-    df = df[["楽曲名", "難易度", "BPI"]].sort_values(by="BPI", ascending=False).replace([np.inf, -np.inf], np.nan).dropna()
-    df["楽曲名"] = df.apply(diff_to_name, axis=1)
-    df = df.drop("難易度", axis=1)
-    song_count = st.slider("計算する曲数を選んでください(10～100, 10刻み)", 10, 100, 20, 10)
-    hbpi = culc_total_bpi(df["BPI"].head(song_count).to_list())
-    st.markdown(f"あなたの{song_count}曲のHBPIは**{round(hbpi, 2)}**です。")
-    st.markdown("## 一覧")
-    st.write(df.head(song_count))
-    
-    st.download_button(
-    label="CSVにエクスポート",
-    data=df.head(song_count).to_csv().encode("shift_jis"),
-    file_name='hbpi.csv',
-    mime='text/csv',
-    )
+    try:
+        df = pd.read_csv(bpi_file)
+        level = st.multiselect(
+            '表示するレベルを選択してください',
+            list(range(11, 13)),
+            [11, 12]
+        )
+        try:
+            df = df[(df["難易度(12段階)"].isin(level))].sort_values(by="BPI", ascending=False).replace([np.inf, -np.inf], np.nan).dropna()
+            df["楽曲名"] = df.apply(diff_to_name, axis=1)
+            df = df.drop("難易度", axis=1)
+            song_count = st.slider("計算する曲数を選んでください(10～100, 10刻み)", 10, 100, 20, 10)
+            hbpi = culc_total_bpi(df["BPI"].head(song_count).to_list())
+            st.markdown(f"あなたの{song_count}曲のHBPIは**{round(hbpi, 2)}**です。")
+            st.markdown("## 一覧")
+            st.write(df[["楽曲名","BPI"]].head(song_count))
+            
+            st.download_button(
+            label="CSVにエクスポート",
+            data=df[["楽曲名","BPI"]].head(song_count).to_csv().encode("shift_jis"),
+            file_name='hbpi.csv',
+            mime='text/csv',
+            )
+        except Exception as e:
+            st.warning("1つ以上の選択肢を押してください。")
+    except Exception as e:
+        st.warning("正しいファイルを読み込んでください。")
     
