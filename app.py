@@ -2,6 +2,28 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 import math
+import requests
+import streamlit.components.v1 as components
+
+class Tweet(object):
+    def __init__(self, s, embed_str=False):
+        if not embed_str:
+            # Use Twitter's oEmbed API
+            # https://dev.twitter.com/web/embedded-tweets
+            api = "https://publish.twitter.com/oembed?url={}".format(s)
+            response = requests.get(api)
+            self.text = response.json()["html"]
+        else:
+            self.text = s
+
+    def _repr_html_(self):
+        return self.text
+
+    def component(self):
+        return components.html(self.text, height=600)
+
+
+t = Tweet("https://twitter.com/OReillyMedia/status/901048172738482176").component()
 
 st.title("NBPIを計算するアプリ")
 bpi_file = st.file_uploader("BPIManagerからエクスポートしたCSVをアップロードしてください")
@@ -37,7 +59,7 @@ if bpi_file is not None:
             df = df.drop("難易度", axis=1)
             song_count = st.slider("計算する曲数を選んでください(10～100, 10刻み)", 10, 100, 20, 10)
             hbpi = culc_total_bpi(df["BPI"].head(song_count).to_list())
-            st.markdown(f"あなたの{song_count}曲のHBPIは**{round(hbpi, 2)}**です。")
+            st.markdown(f"あなたの{song_count}曲のNBPIは**{round(hbpi, 2)}**です。")
             st.markdown("## 一覧")
             st.write(df[["楽曲名","BPI"]].head(song_count))
             
