@@ -23,7 +23,7 @@ class Tweet(object):
         return components.html(self.text, height=600)
 
 
-t = Tweet("https://twitter.com/OReillyMedia/status/901048172738482176").component()
+# t = Tweet("https://twitter.com/OReillyMedia/status/901048172738482176").component()
 
 st.title("NBPIを計算するアプリ")
 bpi_file = st.file_uploader("BPIManagerからエクスポートしたCSVをアップロードしてください")
