@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nBPI Calculator</title>
+    <meta name="description" content="Calculate your nBPI from BPIManager CSV export.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- PapaParse for CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 class="logo">nBPI Calculator</h1>
+            <p class="subtitle">beatmania IIDXの実力を正確に計算します。</p>
+            <div class="info-link">
+                <a href="https://x.com/taniguchicup/status/1764177877913014618?s=20" target="_blank" rel="noopener noreferrer">
+                    nBPIとは？ <span class="arrow">↗</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="card upload-section">
+                <div class="upload-area" id="drop-zone">
+                    <input type="file" id="file-input" accept=".csv" hidden>
+                    <div class="upload-content">
+                        <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        <h3>BPIManagerからCSVをアップロード</h3>
+                        <p>クリックまたはドラッグ＆ドロップで選択</p>
+                        <p class="upload-hint">BPIManagerの設定 > その他 > エクスポートで保存したCSVをアップロードして下さい</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Controls & Results Section (Hidden by default) -->
+            <div id="dashboard" class="dashboard hidden">
+                
+                <!-- Controls -->
+                <section class="card controls-section">
+                    <div class="control-group">
+                        <label>レベル絞り込み</label>
+                        <div class="toggle-group">
+                            <label class="toggle-btn">
+                                <input type="checkbox" value="11" checked>
+                                <span>Lv 11</span>
+                            </label>
+                            <label class="toggle-btn">
+                                <input type="checkbox" value="12" checked>
+                                <span>Lv 12</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>計算対象曲数: <span id="song-count-val">20</span>曲</label>
+                        <input type="range" id="song-count-slider" min="10" max="100" step="10" value="20">
+                        <div class="range-labels">
+                            <span>10</span>
+                            <span>100</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Result Display -->
+                <section class="card result-section">
+                    <h2>あなたのnBPI</h2>
+                    <div class="score-display">
+                        <span id="nbpi-score" class="score">0.00</span>
+                    </div>
+                </section>
+
+                <!-- Data Table -->
+                <section class="card table-section">
+                    <div class="table-header">
+                        <h2>対象楽曲一覧</h2>
+                        <button id="download-btn" class="btn primary-btn">
+                            CSVをダウンロード
+                        </button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="result-table">
+                            <thead>
+                                <tr>
+                                    <th>順位</th>
+                                    <th>楽曲名</th>
+                                    <th>BPI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic Content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>ブラウザ内で計算は完結します。データがサーバーに送信されることはありません。</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
