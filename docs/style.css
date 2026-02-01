@@ -295,3 +295,39 @@ td {
         font-size: 3rem;
     }
 }
+
+/* Footer */
+.app-footer {
+    margin-top: 3rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding-bottom: 2rem;
+}
+
+.creator-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.x-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.x-link:hover {
+    color: var(--accent);
+}
+
+.x-icon {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
